@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LDF's World</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            overflow: hidden;
+            background-color: #fff0d1;
+        }
+        .grid-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(20px, 1fr));
+            grid-auto-rows: 20px;
+            z-index: 0;
+        }
+        .grid-item {
+            background-color: #fff0d1;
+            transition: all 0.3s ease;
+        }
+        .grid-item:hover {
+            background-color: #8a2be2;
+            transform: scale(2);
+            z-index: 2;
+        }
+        .content, .spotify-content {
+            position: absolute;
+            z-index: 1;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            user-select: none;
+            border: 2px solid #333;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .content {
+            max-width: 800px;
+            left: 40%;
+            top: 40%;
+            transform: translate(-50%, -50%);
+        }
+        .spotify-content {
+            width: 400px;
+            left: 60%;
+            top: 40%;
+            transform: translate(-50%, -50%);
+        }
+        .window-frame {
+            background-color: #f0f0f0;
+            border-bottom: 1px solid #ccc;
+            padding: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            cursor: move;
+        }
+        .window-title {
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .window-controls {
+            display: flex;
+        }
+        .window-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-left: 5px;
+            cursor: pointer;
+        }
+        .close { background-color: #ff5f56; }
+        .minimize { background-color: #ffbd2e; }
+        .maximize { background-color: #27c93f; }
+        .lens { 
+            background-color: #00501e; 
+            text-decoration: none;
+        }
+        .window-content {
+            padding: 20px;
+        }
+        .content:active, .spotify-content:active {
+            scale: 1.01;
+            box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+        }
+        .floating-background {
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .email-button, .website-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #8a2be2;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .email-button:hover, .website-button:hover {
+            background-color: #b19cd9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+        .spotify-content .window-content {
+            padding: 10;
+            overflow: hidden;
+        }
+        .spotify-content iframe {
+            display: block;
+            width: 100%;
+            height: 352px;
+            border: none;
+        }
+        @media screen and (max-width: 768px) {
+            body {
+                overflow-y: auto;
+            }
+            .grid-container {
+                display: none;
+            }
+            .content, .spotify-content {
+                position: static;
+                width: 90%;
+                max-width: none;
+                margin: 20px auto;
+                transform: none;
+            }
+            .window-frame {
+                cursor: default;
+            }
+            .window-content {
+                padding: 10px;
+            }
+            .floating-background {
+                margin: 10px 0;
+            }
+            .email-button, .website-button {
+                display: inline-block;
+                width: 30%;
+                padding: 5px 10px;
+                margin: 5px;
+                font-size: 12px;
+            }
+            .button-container {
+                text-align: center;
+            }
+            body {
+                font-size: 14px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+            h2 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-container" id="gridContainer"></div>
+    
+    <div class="content" id="draggableContent">
+        <div class="window-frame" id="dragHandle">
+            <div class="window-title">LDF's World</div>
+            <div class="window-controls">
+                <div class="window-button minimize"></div>
+                <div class="window-button maximize"></div>
+                <div class="window-button close"></div>
+                <a href="https://hey.xyz/u/ldf_gm" class="window-button lens" title="Lens Profile"></a>
+            </div>
+        </div>
+        <div class="window-content">
+            <header>
+                <h1>hi i'm LDF :)</h1>
+            </header>
+
+            <h2>welcome to my little corner of the web ☕ </h2>
+            <div class="floating-background">
+                <p><i>technical enough</i>, <a href="https://www.16personalities.com/intj-personality">INTJ</a>, currently on a quest to invert the internet</p>
+                <p>my attention is piqued by experimental projects and scheming</p>
+                <p>I am open to project-based work, research, and collaborations</p>
+            </div>
+            <p>To chat about opportunities to work together 🤗 </p>
+            <a href="mailto:ldf@ldf.world" class="email-button">Reach Out</a>
+
+            <div class="floating-background">
+                <p>LDF is a creator and contributor excited about experiments that reimagine a better internet</p> 
+                <p>after working with top gaming, e-commerce, and crypto brands in roles at Facebook and Reddit, in 2021 began working full time on initiatives promoting individual freedom, privacy, and ownership online by leveraging the decentralized web</p>
+            </div>
+            <main>
+                <br>
+                <div class="button-container">
+                    <a href="https://www.twitter.com/ldf_gm" class="website-button">Twitter</a>
+                    <a href="https://hey.xyz/u/ldf_gm" class="website-button">Lens</a>
+                    <a href="https://warpcast.com/ldf-gm" class="website-button">Warpcast</a>
+                    <a href="https://zora.co/ldf" class="website-button">Zora</a>
+                </div>
+                <br><br><br>
+            </main>
+        </div>
+    </div>
+
+    <div class="spotify-content" id="draggableSpotify">
+        <div class="window-frame" id="spotifyDragHandle">
+            <div class="window-title">what the algo thinks I want to listen to</div>
+            <div class="window-controls">
+                <div class="window-button minimize"></div>
+                <div class="window-button maximize"></div>
+                <div class="window-button close"></div>
+            </div>
+        </div>
+        <div class="window-content">
+            <iframe src="https://open.spotify.com/embed/playlist/37i9dQZEVXcUdNZ4nqJzGm?utm_source=generator&theme=0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
+    </div>
+
+    <script>
+        function createGrid() {
+            const container = document.getElementById('gridContainer');
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            const cellSize = 20;
+            const columns = Math.ceil(viewportWidth / cellSize);
+            const rows = Math.ceil(viewportHeight / cellSize);
+
+            container.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
+            container.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+
+            const totalCells = columns * rows;
+
+            while (container.firstChild) {
+                container.removeChild(container.firstChild);
+            }
+
+            for (let i = 0; i < totalCells; i++) {
+                const div = document.createElement('div');
+                div.className = 'grid-item';
+                container.appendChild(div);
+            }
+        }
+
+        function addTrailEffect() {
+            let trail = [];
+            const trailLength = 15;
+
+            document.getElementById('gridContainer').addEventListener('mousemove', (e) => {
+                const gridItem = e.target.closest('.grid-item');
+                if (gridItem) {
+                    gridItem.style.backgroundColor = '#8a2be2';
+                    trail.push({element: gridItem, timestamp: Date.now()});
+
+                    if (trail.length > trailLength) {
+                        const oldestItem = trail.shift();
+                        oldestItem.element.style.backgroundColor = '';
+                    }
+                }
+            });
+
+            function updateTrail() {
+                const now = Date.now();
+                trail.forEach((item) => {
+                    const age = now - item.timestamp;
+                    const opacity = 1 - (age / 1000);
+                    if (opacity > 0) {
+                        item.element.style.backgroundColor = `rgba(138, 43, 226, ${opacity})`;
+                    } else {
+                        item.element.style.backgroundColor = '';
+                    }
+                });
+                requestAnimationFrame(updateTrail);
+            }
+
+            updateTrail();
+        }
+
+        function makeDraggable(contentElement, handleElement) {
+            let isDragging = false;
+            let currentX;
+            let currentY;
+            let initialX;
+            let initialY;
+            let xOffset = 0;
+            let yOffset = 0;
+
+            let transform = window.getComputedStyle(contentElement).getPropertyValue('transform');
+            let matrix = new DOMMatrix(transform);
+            xOffset = matrix.m41;
+            yOffset = matrix.m42;
+
+            handleElement.addEventListener("mousedown", dragStart);
+            document.addEventListener("mousemove", drag);
+            document.addEventListener("mouseup", dragEnd);
+
+            function dragStart(e) {
+                initialX = e.clientX - xOffset;
+                initialY = e.clientY - yOffset;
+                if (e.target === handleElement || e.target.closest('.window-title')) {
+                    isDragging = true;
+                }
+            }
+
+            function drag(e) {
+                if (isDragging) {
+                    e.preventDefault();
+                    currentX = e.clientX - initialX;
+                    currentY = e.clientY - initialY;
+
+                    xOffset = currentX;
+                    yOffset = currentY;
+
+                    setTranslate(currentX, currentY, contentElement);
+                }
+            }
+
+            function dragEnd(e) {
+                initialX = currentX;
+                initialY = currentY;
+                isDragging = false;
+            }
+
+            function setTranslate(xPos, yPos, el) {
+                el.style.transform = `translate(${xPos}px, ${yPos}px)`;
+            }
+        }
+
+        function isMobile() {
+            return window.innerWidth <= 768;
+        }
+
+        function initializePage() {
+            if (!isMobile()) {
+                createGrid();
+                addTrailEffect();
+                makeDraggable(document.getElementById('draggableContent'), document.getElementById('dragHandle'));
+                makeDraggable(document.getElementById('draggableSpotify'), document.getElementById('spotifyDragHandle'));
+            }
+        }
+
+        window.addEventListener('resize', createGrid);
+        window.addEventListener('load', initializePage);
+    </script>
+</body>
+</html>
